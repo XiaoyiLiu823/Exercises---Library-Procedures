@@ -1,0 +1,79 @@
+class Book:
+    def __init__(self,name,author,intro,state=0):
+        self.name=name
+        self.author=author
+        self.intro=intro
+        self.state=state
+
+    def __str__(self):
+        if self.state==0:
+            status='未借出'
+        else:
+            status='已借出'
+        return f"名称：{self.name}\n作者：{self.author}\n类型：{self.intro}\n状态：{status}"
+    
+class BookManager:
+    books=[]
+    def menu(self):
+        print('欢迎使用流浪图书管理系统！')
+        while True:
+            print('请选择你的操作：\n1、查询书籍\n2、添加书籍\n3、借阅书籍\n4、归还书籍\n5、退出系统')
+            choice=int(input('请输入你的选择：'))
+            if choice==1:
+                self.show()
+            elif choice==2:
+                self.add()
+            elif choice==3:
+                self.len_book()
+            elif choice==4:
+                self.return_book()
+            elif choice==5:
+                print('期待下次再见！')
+                break
+
+    def show(self):
+        for book in self.books:
+            print(book)
+
+    def add(self):
+        newname=input('请输入你要添加的书名：')
+        newauthor=input('请输入此书的作者：')
+        newintro=input('请输入本书类型：')
+        book4=Book(newname,newauthor,newintro)
+        self.books.append(book4)
+
+    def check(self,name):
+        for book in self.books:
+            if book.name==name:
+                return book
+        return None
+            
+    def len_book(self):
+        borrow=input('请输入你需要借阅的书籍：')
+        search=self.check(borrow)
+        if search!=None:
+            if search.state==0:
+                print('借阅成功！')
+                search.state=1
+
+            else:
+                print('此书已借出，请下次再来')
+
+        else:
+            print('图书馆中未收录此书')
+
+    def return_book(self):
+        borrow=input('请输入你要归还的书籍：')
+        search=self.check(borrow)
+        if search!=None:
+            if search.state==1:
+                print('归还成功！欢迎下次再来')
+                search.state=0
+            else:
+                print('这本书没有被借出')
+
+        else:
+            print('图书馆中未收录此书')
+
+manager=BookManager()
+manager.menu()
